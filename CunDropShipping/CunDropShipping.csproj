@@ -13,20 +13,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="adapter\restful\v1\controller\Client\Entity\" />
       <Folder Include="adapter\restful\v1\controller\Client\Mapper\" />
-      <Folder Include="adapter\restful\v1\controller\Product\Entity\" />
-      <Folder Include="adapter\restful\v1\controller\Product\Mapper\" />
-      <Folder Include="application\Client\Service\" />
-      <Folder Include="application\Product\Service\" />
       <Folder Include="domain\Client\Entity\" />
       <Folder Include="domain\Client\Utils\" />
-      <Folder Include="domain\Product\Entity\" />
-      <Folder Include="domain\Product\Utils\" />
-      <Folder Include="infrastructure\Client\DbContext\" />
-      <Folder Include="infrastructure\Client\Entity\" />
-      <Folder Include="infrastructure\Product\DbContext\" />
-      <Folder Include="infrastructure\Product\Entity\" />
     </ItemGroup>
 
     <ItemGroup>
