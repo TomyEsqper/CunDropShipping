@@ -13,12 +13,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="adapter\restful\v1\controller\Client\Mapper\" />
-      <Folder Include="domain\Client\Entity\" />
-      <Folder Include="domain\Client\Utils\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
