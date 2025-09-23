@@ -1,7 +1,13 @@
 using CunDropShipping.infrastructure.DbContext;
+using CunDropShipping.application.Service;
+using CunDropShipping.domain;
+using CunDropShipping.infrastructure.DbContext;
 using Microsoft.EntityFrameworkCore;
 
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllers();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -15,6 +21,13 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
+
+// Le decimos a la app como conectar el contrato con la implementacion.
+builder.Services.AddScoped<IProductService, ProductServiceImp>();
+
+// Le decimos a la app que el IRepository tambien esta disponible para ser inyectado.
+builder.Services.AddScoped<IRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,6 +36,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.MapControllers();
 
 app.UseHttpsRedirection();
 
