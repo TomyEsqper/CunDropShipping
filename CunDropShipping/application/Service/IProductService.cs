@@ -5,16 +5,14 @@ namespace CunDropShipping.application.Service;
 
 // Esta es la definicion de nuestro contrato.
 // Cualquier clase que se implemente esta interfaz esta OBLIGADA
-// a tener estoss metodos.
+// a tener estos metodos.
 
 public interface IProductService
 {
-    // Contrato para obtener todos los porductos
-    Task<List<DomainProductEntity>> GetAllAsync();
-    
-    // Aquí añadiremos los otros contratos del CRUD más adelante
-    // Task<DomainProductEntity> GetByIdAsync(Guid id);
-    // Task<DomainProductEntity> CreateAsync(DomainProductEntity product);
-    // Task<DomainProductEntity> UpdateAsync(Guid id, DomainProductEntity product);
-    // Task DeleteAsync(Guid id);
+    // Contrato para obtener todos los porducto
+    List<DomainProductEntity> GetAllProducts();
+    DomainProductEntity GetProductById(int id);
+    DomainProductEntity SaveProduct(DomainProductEntity product);
+    DomainProductEntity UpdateProduct(int id, DomainProductEntity product);
+    DomainProductEntity DeleteProduct(int id, DomainProductEntity product);
 }

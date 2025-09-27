@@ -3,35 +3,39 @@ using CunDropShipping.domain.Entity;
 
 namespace CunDropShipping.adapter.restful.v1.controller.Mapper;
 
-public static class AdapterMapper
+public class AdapterMapper : IAdapterMapper
 {
-    // Este metodo convierte la entidad de Dominio (interna)
-    // en la entidad del adaptador (publica).
-    public static AdapterProductEntity ToAdapter(this DomainProductEntity domainEntity)
+    public AdapterProductEntity ToAdapterProduct(DomainProductEntity domainProduct)
     {
         return new AdapterProductEntity
         {
-            Id = domainEntity.Id,
-            Name = domainEntity.Name,
-            Description = domainEntity.Description,
-            Price = domainEntity.Price,
-            Stock = domainEntity.Stock,
-        };
+            Id = domainProduct.Id,
+            Name = domainProduct.Name,
+            Description = domainProduct.Description,
+            Price = domainProduct.Price,
+            Stock = domainProduct.Stock,
+        };    
     }
-    
-    // Tambien creamos el traductor inverso para cuando necesitemos
-    // convertir un formulario del cliente en una entidad de Dominio.
-    // Lo usaremos par ael metodo de CREAR producto
-    public static DomainProductEntity ToDomain(this AdapterProductEntity adapterEntity)
+
+    public List<AdapterProductEntity> ToAdapterProductList(List<DomainProductEntity> domainProducts)
+    {
+        return domainProducts.Count == 0 ? new List<AdapterProductEntity>() : domainProducts.Select(ToAdapterProduct).ToList();
+    }
+
+    public DomainProductEntity ToDomainProduct(AdapterProductEntity adapterProduct)
     {
         return new DomainProductEntity
         {
-            // No mapeamos el Id porque al crear, la logica de negocio debe generarlo.
-            Name = adapterEntity.Name,
-            Description = adapterEntity.Description,
-            Price = adapterEntity.Price,
-            Stock = adapterEntity.Stock,
-        };
+            Id = adapterProduct.Id,
+            Name = adapterProduct.Name,
+            Description = adapterProduct.Description,
+            Price = adapterProduct.Price,
+            Stock = adapterProduct.Stock,
+        }; 
+    }
 
+    public List<DomainProductEntity> ToDomeinProducts(List<AdapterProductEntity> adapterProducts)
+    {
+        return  adapterProducts.Count == 0 ? new List<DomainProductEntity>() : adapterProducts.Select(ToDomainProduct).ToList();   
     }
 }

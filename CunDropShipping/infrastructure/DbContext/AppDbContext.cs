@@ -12,6 +12,6 @@ public class AppDbContext : Microsoft.EntityFrameworkCore.DbContext
     }
     
     // Esta linea crea una representacion de tu tabla 'Products' en el codigo.
-    // A traves de 'Products', podremos ahcer consultas como buscar, crear, eliminar, etc.
+    // A traves de 'Products', podremos hacer consultas como buscar, crear, eliminar, etc.
     public DbSet<ProductEntity> Products { get; set; }
-}
+}   

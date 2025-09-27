@@ -2,6 +2,7 @@
 using CunDropShipping.application.Service;
 using CunDropShipping.domain.Entity;
 using CunDropShipping.infrastructure.DbContext;
+using CunDropShipping.infrastructure.Mapper;
 
 namespace CunDropShipping.domain;
 
@@ -11,23 +12,39 @@ public class ProductServiceImp : IProductService
     // 1. EL ESPECIALISTA
     // Ya no tenemos una lista de juguete. Ahora tenemos una referencia
     // a nuestro "especialista en logistica", el IRepository.
-    private readonly IRepository _repository;
-    
+    private readonly Repository _repository;
+
     // 2. EL CONSTRCTOR (COMO RECIBE EL ESPECIALISTA)
     // Cuando la aplicacion cree este servicio, le "inyectara" automaticamente
     // una instacia del IRepository. El estratega no lo crea, lo recibe.
-    public ProductServiceImp(IRepository repository)
+    public ProductServiceImp(Repository set)
     {
-        _repository = repository;
+        _repository = set;
     }
-    
-    // 3. LA TAREA DELGADA
-    // Este metodo ahora es mucho mas simple.
-    public async Task<List<DomainProductEntity>> GetAllAsync()
+
+    // El service simplemente le pasa la orden al Repository.
+    public List<DomainProductEntity> GetAllProducts()
     {
-        // Simplemente le pide al repositorio que obtenga todos los productos...
-        var products = await _repository.GetAll();
-        // ... y los devuelve como una lista
-        return products.ToList();
+        return _repository.GetAllProducts();
+    }
+
+    public DomainProductEntity GetProductById(int id)
+    {
+        return _repository.GetProductById(id);
+    }
+
+    public DomainProductEntity SaveProduct(DomainProductEntity product)
+    {
+        return _repository.SaveProduct(product);
+    }
+
+    public DomainProductEntity UpdateProduct(int id, DomainProductEntity product)
+    {
+        return _repository.UpdateProduct(id, product);
+    }
+
+    public DomainProductEntity DeleteProduct(int id, DomainProductEntity product)
+    {
+        return _repository.DeleteProduct(id, product);
     }
 }

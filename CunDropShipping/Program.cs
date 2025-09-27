@@ -1,7 +1,8 @@
+using CunDropShipping.adapter.restful.v1.controller.Mapper;
 using CunDropShipping.infrastructure.DbContext;
 using CunDropShipping.application.Service;
 using CunDropShipping.domain;
-using CunDropShipping.infrastructure.DbContext;
+using CunDropShipping.infrastructure.Mapper;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -21,12 +22,10 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-
-// Le decimos a la app como conectar el contrato con la implementacion.
+builder.Services.AddScoped<Repository>();
+builder.Services.AddScoped<IInfrastructureMapper, InfrastructureMapperImpl>();
+builder.Services.AddScoped<IAdapterMapper, AdapterMapper>();
 builder.Services.AddScoped<IProductService, ProductServiceImp>();
-
-// Le decimos a la app que el IRepository tambien esta disponible para ser inyectado.
-builder.Services.AddScoped<IRepository>();
 
 var app = builder.Build();
 
@@ -37,9 +36,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapControllers();
-
 app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();
 
