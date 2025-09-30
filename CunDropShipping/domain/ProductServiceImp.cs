@@ -2,7 +2,7 @@
 using CunDropShipping.application.Service;
 using CunDropShipping.domain.Entity;
 using CunDropShipping.infrastructure.DbContext;
-using CunDropShipping.infrastructure.Mapper;
+using System.Collections.Generic;
 
 namespace CunDropShipping.domain;
 
@@ -10,13 +10,13 @@ namespace CunDropShipping.domain;
 public class ProductServiceImp : IProductService
 {
     // 1. EL ESPECIALISTA
-    // Ya no tenemos una lista de juguete. Ahora tenemos una referencia
+    // Ya no tenemos una lista de juguetes. Ahora tenemos una referencia
     // a nuestro "especialista en logistica", el IRepository.
     private readonly Repository _repository;
 
-    // 2. EL CONSTRCTOR (COMO RECIBE EL ESPECIALISTA)
-    // Cuando la aplicacion cree este servicio, le "inyectara" automaticamente
-    // una instacia del IRepository. El estratega no lo crea, lo recibe.
+    // 2. EL CONSTRUCTOR (COMO RECIBE EL ESPECIALISTA)
+    // Cuando la aplicacion cree este servicio, le "inyectará" automaticamente
+    // una instancia del IRepository. El estratega no lo crea, lo recibe.
     public ProductServiceImp(Repository set)
     {
         _repository = set;
@@ -46,5 +46,10 @@ public class ProductServiceImp : IProductService
     public DomainProductEntity DeleteProduct(int id, DomainProductEntity product)
     {
         return _repository.DeleteProduct(id, product);
+    }
+
+    public void ProcessPurchase(PurchaseCommand purchaseCommand)
+    {
+        _repository.ProcessPurchase(purchaseCommand);
     }
 }

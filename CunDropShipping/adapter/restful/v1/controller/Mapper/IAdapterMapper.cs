@@ -5,12 +5,15 @@ namespace CunDropShipping.adapter.restful.v1.controller.Mapper;
 
 public interface IAdapterMapper
 {
-    // Recibe una entidad de Dominio y devuelve una entidad del adaptador.
+    // Contratos para traducir entre Domain y Adapter para un solo producto
     AdapterProductEntity ToAdapterProduct(DomainProductEntity domainProduct);
+    DomainProductEntity ToDomainProduct(AdapterProductEntity adapterProduct);
+
+    // Contratos para traducir listas de productos
     List<AdapterProductEntity> ToAdapterProductList(List<DomainProductEntity> domainProducts);
-    
-    // Recibe una entidad del Adaptador y la convierte a una entidad del Dominio.
-    public DomainProductEntity ToDomainProduct(AdapterProductEntity adapterProduct);
-    public List<DomainProductEntity> ToDomeinProducts(List<AdapterProductEntity> adapterProducts);
+    //List<DomainProductEntity> ToDomainProductList(List<AdapterProductEntity> adapterProducts);
+
+    // Contrato para traducir la solicitud de compra a un comando de dominio
+    PurchaseCommand ToPurchaseCommand(PurchaseRequest request);
 
 }
