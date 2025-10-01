@@ -1,7 +1,6 @@
 using CunDropShipping.adapter.restful.v1.controller.Entity;
 using CunDropShipping.domain.Entity;
 
-
 namespace CunDropShipping.adapter.restful.v1.controller.Mapper;
 
 public class AdapterMapper : IAdapterMapper
@@ -39,17 +38,4 @@ public class AdapterMapper : IAdapterMapper
     {
         return  adapterProducts.Count == 0 ? new List<DomainProductEntity>() : adapterProducts.Select(ToDomainProduct).ToList();   
     }
-    
-    public PurchaseCommand ToPurchaseCommand(PurchaseRequest request)
-    {
-        return new PurchaseCommand
-        {
-            Items = request.Items.Select(item => new PurchaseItem
-            {
-                ProductId = item.ProductId,
-                Quantity = item.Quantity
-            }).ToList()
-        };
-    }
-    
 }

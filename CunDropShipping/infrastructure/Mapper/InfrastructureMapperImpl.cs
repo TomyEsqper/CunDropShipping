@@ -1,9 +1,9 @@
-// Importamos las dos "fichas" que vamos a traducir entre sí
+// Improtamos las dos "fichas" que vamos a traducir entre si
 using CunDropShipping.domain.Entity;
 using CunDropShipping.infrastructure.Entity;
 namespace CunDropShipping.infrastructure.Mapper;
 
-// La palabra 'static' es clave aquí. Significa que esta clase no se puede instanciar,
+// La palabra 'static' es clave aqui. Significa que esta clase no se puede instanciar,
 // solo sirve como un contenedor para nuestros metodos de traduccion.
 public class InfrastructureMapperImpl : IInfrastructureMapper
 {
@@ -14,7 +14,7 @@ public class InfrastructureMapperImpl : IInfrastructureMapper
     {
         return new ProductEntity
         {
-            // ... Y copiamos los valores campo por campo.
+            // ... y copiamos los valores campo por campo.
             Name = domainProduct.Name,
             Description = domainProduct.Description,
             Price = domainProduct.Price,
@@ -36,7 +36,7 @@ public class InfrastructureMapperImpl : IInfrastructureMapper
     {
         return new DomainProductEntity
         {
-            // ... Y copiamos los valores campo por campo.
+            // ... y copiamos los valores campo por campo.
             Id = domainProduct.Id,
             Name = domainProduct.Name,
             Description = domainProduct.Description,

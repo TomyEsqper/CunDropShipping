@@ -1,12 +1,12 @@
 using CunDropShipping.domain.Entity;
+using CunDropShipping.infrastructure.Entity;
 using CunDropShipping.infrastructure.Mapper;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace CunDropShipping.infrastructure.DbContext;
 
 // Esta es la implementacion del Repositorio.
-// Se encargará de todas las operaciones CRUD para la entidad ProductEntity.
+// Se encargara de todas las operaciones CRUD para la entidad ProductEntity.
 public class Repository
 {
     // Guardamos una referencia a neutro "puente" con la base de datos.
@@ -53,10 +53,10 @@ public class Repository
      // 1. Usa el mapper para traducir de Dominio a Infraestructura.
      var infraProduct = _mapper.ToInfrastructureEntity(domainProduct);
      
-     // 2. anade la nueva entidad al DbContext. Aún no está en la BD.
+     // 2. anade la nueva entidad al DbContext. Aun no esta en la BD.
      _context.Products.Add(infraProduct);
      
-     // 3. Confirma la trasaccion y guarda lso cambio en la base de datos.
+     // 3. Confirma la trasaccion y guarda lso cambio en la base de  datos.
      _context.SaveChanges();
      
      // 4. EF actualiza el 'infraProduct' con el ID generado por la BD.
@@ -103,34 +103,10 @@ public class Repository
         // 2. ELIMINAR: Lo marcamos para eliminacion.
         _context.Products.Remove(existingProduct);
         
-        // 3. GUARDAR: Guardamos los cambios. EF generará un comando DELETE.
+        // 3. GUARDAR: Guardamos los cambios. EF generara un comando DELETE.
         _context.SaveChanges();
         
         // Devolvemos el producto que fue eliminado, traducido a Dominio.
         return _mapper.ToDomainProductEntity(existingProduct);
     }
-
-    public void ProcessPurchase(PurchaseCommand purchaseCommand)
-    {
-        // PASO 1: VERIFICAR TOD0 ANTES DE HACER  CAMBIOS
-        foreach (var item in purchaseCommand.Items)
-        {
-            var product = _context.Products.Find(item.ProductId);
-            if (product == null)
-                throw new Exception($"El producto con Id {item.ProductId} no existe.");
-            if (product.Stock < item.Quantity)
-                throw new Exception($"No hay suficiente stock del producto con Id {item.ProductId}.");
-        }
-        
-        // PASO 2: SI TOD0 ESTA BIEN, PROCEDER CON LA ACTUALIZACION
-        foreach (var item in purchaseCommand.Items)
-        {
-            var producToUpdate = _context.Products.Find(item.ProductId);
-            producToUpdate.Stock -= item.Quantity;
-        }
-        
-        // Guarda todos los cambios en la base de datos en una sola transaccion.
-        _context.SaveChanges();
-    }
-    
 }
