@@ -1,6 +1,7 @@
 using CunDropShipping.adapter.restful.v1.controller.Entity;
 using CunDropShipping.adapter.restful.v1.controller.Mapper;
 using CunDropShipping.application.Service;
+using CunDropShipping.domain.Entity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CunDropShipping.adapter.restful.v1.controller;
@@ -9,7 +10,7 @@ namespace CunDropShipping.adapter.restful.v1.controller;
 [Route("api/v1/Products")]
 public class ProductController : ControllerBase
 {   
-    // 1. El recepcionista necesita hablar con el coordinador (IProductService)
+    // 1. El recepcionista necesita hablar con el coordinador (IProducService
     private readonly IProductService _productService;
 
     private readonly IAdapterMapper _adapterMapper;
@@ -53,10 +54,10 @@ public class ProductController : ControllerBase
         var domainProduct = _adapterMapper.ToDomainProduct(product);
         
         // 2. Llama a servicio para que guarde el producto.
-        var createdProduct = _productService.SaveProduct(domainProduct);
+        var CreatedProduct = _productService.SaveProduct(domainProduct);
         
         // 3. Traduce el producto guardado (que ya tiene Id) de vuelta al formato del cliente.
-        var adapterResult = _adapterMapper.ToAdapterProduct(createdProduct);
+        var adapterResult = _adapterMapper.ToAdapterProduct(CreatedProduct);
         
         // 4. Devuelve una respuesta "201 Created", que es el estandar para un POST exitoso.
         //  Incluye la URL para encontrar el nuevo recurso y el objeto creado.
@@ -78,7 +79,7 @@ public class ProductController : ControllerBase
             return NotFound();
         }
         
-        // Si t0do salió bien, traducimos el resultado y devolvemos un 200 OK.
+        // Si t0do salio bien, traducimos el resultado y devolvemos un 200 OK.
         var adapterResult = _adapterMapper.ToAdapterProduct(updatedProduct);
         return Ok(adapterResult);
     }
@@ -97,21 +98,5 @@ public class ProductController : ControllerBase
         
         var adapterResult = _adapterMapper.ToAdapterProduct(deletedProduct);
         return Ok(adapterResult);
-    }
-    
-    [HttpPost("purchase")]
-    public IActionResult Purchase([FromBody] PurchaseRequest purchaseRequest)
-    {
-        try
-        {
-            // Usamos la instancia inyectada para traducir la solicitud
-            var purchaseCommand = _adapterMapper.ToPurchaseCommand(purchaseRequest);
-            _productService.ProcessPurchase(purchaseCommand);
-            return Ok(new { message = "Compra realizada con éxito." });
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new { error = ex.Message });
-        }
     }
 }
