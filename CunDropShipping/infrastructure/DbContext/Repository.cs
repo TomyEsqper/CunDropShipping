@@ -1,3 +1,5 @@
+// Esta es la implementacion del Repositorio.
+// Se encargara de todas las operaciones CRUD para la entidad ProductEntity.
 using CunDropShipping.domain.Entity;
 using CunDropShipping.infrastructure.Entity;
 using CunDropShipping.infrastructure.Mapper;
@@ -6,22 +8,31 @@ using System.Linq;
 
 namespace CunDropShipping.infrastructure.DbContext;
 
-// Esta es la implementacion del Repositorio.
-// Se encargara de todas las operaciones CRUD para la entidad ProductEntity.
+/// <summary>
+/// Repositorio responsable de la persistencia de productos.
+/// Implementa operaciones CRUD y consultas específicas sobre la tabla de productos usando Entity Framework Core.
+/// </summary>
 public class Repository
 {
     // Guardamos una referencia a neutro "puente" con la base de datos.
     private readonly AppDbContext _context;
     private readonly IInfrastructureMapper _mapper;
     
-    // El constructor recibe el DbContext a traves de inyeccion de dependencias
+    /// <summary>
+    /// Inicializa una nueva instancia de <see cref="Repository"/>.
+    /// </summary>
+    /// <param name="context">DbContext configurado para acceder a la base de datos.</param>
+    /// <param name="mapper">Mapper encargado de convertir entre entidades de infraestructura y dominio.</param>
     public Repository(AppDbContext context, IInfrastructureMapper mapper)
     {
         _context = context;
         _mapper = mapper;
     }
 
-    // El método devuelve la lista YA TRADUCIDA a DomainProductEntity
+    /// <summary>
+    /// Obtiene todos los productos almacenados en la base de datos.
+    /// </summary>
+    /// <returns>Lista de <see cref="DomainProductEntity"/> representando los productos.</returns>
     public List<DomainProductEntity> GetAllProducts()
     {
         // 1. Obtiene los datos crudos de la BD.
@@ -34,6 +45,12 @@ public class Repository
         return _mapper.ToDomainProductEntityList(productEntities);
     }
 
+    /// <summary>
+    /// Obtiene un producto por su identificador.
+    /// </summary>
+    /// <param name="id">Identificador del producto a buscar.</param>
+    /// <returns>La entidad <see cref="DomainProductEntity"/> encontrada.</returns>
+    /// <exception cref="KeyNotFoundException">Thrown cuando no se encuentra el producto.</exception>
     public DomainProductEntity GetProductById(int id)
     {
         // Busca directamente en la BD el producto con el ID especificado.
@@ -49,6 +66,11 @@ public class Repository
         return _mapper.ToDomainProductEntity(infraProduct);
     }
 
+    /// <summary>
+    /// Crea y persiste un nuevo producto en la base de datos.
+    /// </summary>
+    /// <param name="domainProduct">Entidad de dominio con los datos del producto a guardar.</param>
+    /// <returns>La entidad de dominio creada, con el Id generado por la base de datos.</returns>
     public DomainProductEntity SaveProduct(DomainProductEntity domainProduct)
     {
      // 1. Usa el mapper para traducir de Dominio a Infraestructura.
@@ -65,6 +87,12 @@ public class Repository
         return _mapper.ToDomainProductEntity(infraProduct);
     }
 
+    /// <summary>
+    /// Actualiza un producto existente identificado por su id.
+    /// </summary>
+    /// <param name="id">Identificador del producto a actualizar.</param>
+    /// <param name="domainProduct">Entidad de dominio con los nuevos valores.</param>
+    /// <returns>La entidad de dominio actualizada o null si no existe el producto.</returns>
     public DomainProductEntity UpdateProduct(int id,DomainProductEntity domainProduct)
     {
         // 1. BUSCAR: Primero, encontramos el producto que ya existe en la base de datos.
@@ -90,6 +118,12 @@ public class Repository
         return _mapper.ToDomainProductEntity(existingProduct);
     }
 
+    /// <summary>
+    /// Elimina un producto identificado por su id.
+    /// </summary>
+    /// <param name="id">Identificador del producto a eliminar.</param>
+    /// <param name="domainProduct">Entidad de dominio (opcional) que puede usarse para validaciones.</param>
+    /// <returns>La entidad de dominio eliminada o null si no existe.</returns>
     public DomainProductEntity DeleteProduct(int id, DomainProductEntity domainProduct)
     {
         // 1. BUSCAR: Primero, encontramos el producto que ya existe en la base de datos.
@@ -111,6 +145,11 @@ public class Repository
         return _mapper.ToDomainProductEntity(existingProduct);
     }
 
+    /// <summary>
+    /// Busca productos cuyo nombre contiene el término de búsqueda.
+    /// </summary>
+    /// <param name="searchTerm">Término de búsqueda para filtrar por nombre.</param>
+    /// <returns>Lista de entidades de dominio que coinciden con el término o null si el término está vacío.</returns>
     public List<DomainProductEntity> SearchProductsByName(string searchTerm)
     {
         if (string.IsNullOrWhiteSpace(searchTerm))
@@ -129,6 +168,12 @@ public class Repository
         return _mapper.ToDomainProductEntityList(foundInfraProduts);
     }
 
+    /// <summary>
+    /// Filtra productos por un rango de precios.
+    /// </summary>
+    /// <param name="minPrice">Precio mínimo inclusivo.</param>
+    /// <param name="maxPrice">Precio máximo inclusivo.</param>
+    /// <returns>Lista de entidades de dominio que cumplen el rango de precio.</returns>
     public List<DomainProductEntity> FilterProductsByPriceRange(decimal minPrice, decimal maxPrice)
     {
         var foundInfraProduts = _context.Products
@@ -139,6 +184,11 @@ public class Repository
         return _mapper.ToDomainProductEntityList(foundInfraProduts);
     }
 
+    /// <summary>
+    /// Obtiene los productos cuyo stock es menor o igual al umbral especificado.
+    /// </summary>
+    /// <param name="stockThreshold">Umbral de stock para filtrar.</param>
+    /// <returns>Lista de entidades de dominio con stock bajo.</returns>
     public List<DomainProductEntity> GetProductsWithLowStock(int stockThreshold)
     {
         var foundIndraProducts = _context.Products

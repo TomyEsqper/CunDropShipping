@@ -3,13 +3,17 @@ using CunDropShipping.domain.Entity;
 using CunDropShipping.infrastructure.Entity;
 namespace CunDropShipping.infrastructure.Mapper;
 
-// La palabra 'static' es clave aqui. Significa que esta clase no se puede instanciar,
-// solo sirve como un contenedor para nuestros metodos de traduccion.
+/// <summary>
+/// Implementación del <see cref="IInfrastructureMapper"/> que convierte entre
+/// las entidades de infraestructura (ProductEntity) y las entidades de dominio (DomainProductEntity).
+/// </summary>
 public class InfrastructureMapperImpl : IInfrastructureMapper
 {
-    // Metodo 1: Dela Base de DAtos HACIA el Dominio
-    // Este metodo 'Extiende' la clase ProductEntity.
-    // La palabra 'this' antes del parametro le da la habilidad de ser llamado como si fuera parte de la clase original.
+    /// <summary>
+    /// Convierte una entidad de dominio a su representación de infraestructura.
+    /// </summary>
+    /// <param name="domainProduct">Entidad de dominio a convertir.</param>
+    /// <returns>Instancia de <see cref="ProductEntity"/> con los campos mapeados.</returns>
     public ProductEntity ToInfrastructureEntity(DomainProductEntity domainProduct)
     {
         return new ProductEntity
@@ -21,6 +25,11 @@ public class InfrastructureMapperImpl : IInfrastructureMapper
             Stock = domainProduct.Stock
         };      }
 
+    /// <summary>
+    /// Convierte una lista de entidades de dominio a una lista de entidades de infraestructura.
+    /// </summary>
+    /// <param name="domainProductList">Lista de entidades de dominio.</param>
+    /// <returns>Lista de <see cref="ProductEntity"/> resultante de la conversión.</returns>
     public List<ProductEntity> ToInfrastructureEntityList(List<DomainProductEntity> domainProductList)
     {
         if (domainProductList.Count() == 0)
@@ -32,6 +41,11 @@ public class InfrastructureMapperImpl : IInfrastructureMapper
             return domainProductList.Select(ToInfrastructureEntity).ToList();
         }    }
 
+    /// <summary>
+    /// Convierte una entidad de infraestructura a su representación de dominio.
+    /// </summary>
+    /// <param name="domainProduct">Entidad de infraestructura a convertir.</param>
+    /// <returns>Instancia de <see cref="DomainProductEntity"/> con los campos mapeados.</returns>
     public DomainProductEntity ToDomainProductEntity(ProductEntity domainProduct)
     {
         return new DomainProductEntity
@@ -45,15 +59,20 @@ public class InfrastructureMapperImpl : IInfrastructureMapper
         };
     }
 
+    /// <summary>
+    /// Convierte una lista de entidades de infraestructura a una lista de entidades de dominio.
+    /// </summary>
+    /// <param name="productEntities">Lista de entidades de infraestructura.</param>
+    /// <returns>Lista de <see cref="DomainProductEntity"/> resultante de la conversión.</returns>
     public List<DomainProductEntity> ToDomainProductEntityList(List<ProductEntity> productEntities)
     {
         
-        // VErifica si la lista de entrada es nula para evitar errores.
+        // Verifica si la lista de entrada es nula para evitar errores.
         if (productEntities.Count() == 0)
         {
             return new List<DomainProductEntity>();
         }
-        // Convierte cada ProducEntity a DomainProductEntity y devolvemos la nueva lista.
+        // Convierte cada ProductEntity a DomainProductEntity y devolvemos la nueva lista.
         return productEntities.Select(p => ToDomainProductEntity(p)).ToList();
     }
 }
