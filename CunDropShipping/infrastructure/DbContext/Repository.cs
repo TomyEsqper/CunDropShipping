@@ -2,6 +2,7 @@ using CunDropShipping.domain.Entity;
 using CunDropShipping.infrastructure.Entity;
 using CunDropShipping.infrastructure.Mapper;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace CunDropShipping.infrastructure.DbContext;
 
@@ -108,5 +109,42 @@ public class Repository
         
         // Devolvemos el producto que fue eliminado, traducido a Dominio.
         return _mapper.ToDomainProductEntity(existingProduct);
+    }
+
+    public List<DomainProductEntity> SearchProductsByName(string searchTerm)
+    {
+        if (string.IsNullOrWhiteSpace(searchTerm))
+        {
+            return null; // Devuelve una lista vacia si no hay termino.
+        }
+        
+        var normalizedSearchTerm = searchTerm.Trim().ToLower();
+        
+        // 1. Busca en la base de datos y obtiene las entidades de infraestructura
+        var foundInfraProduts = _context.Products
+            .Where(p => p.Name.ToLower().Contains(searchTerm))
+            .ToList();
+        
+        // 2. Usa el mapper para traducir la lista y devolverla
+        return _mapper.ToDomainProductEntityList(foundInfraProduts);
+    }
+
+    public List<DomainProductEntity> FilterProductsByPriceRange(decimal minPrice, decimal maxPrice)
+    {
+        var foundInfraProduts = _context.Products
+            .Where(p => p.Price >= minPrice && p.Price <= maxPrice)
+            .OrderBy(p => p.Price)
+            .ToList();
+
+        return _mapper.ToDomainProductEntityList(foundInfraProduts);
+    }
+
+    public List<DomainProductEntity> GetProductsWithLowStock(int stockThreshold)
+    {
+        var foundIndraProducts = _context.Products
+            .Where(p => p.Stock <= stockThreshold)
+            .OrderBy(p => p.Stock)
+            .ToList();
+        return _mapper.ToDomainProductEntityList(foundIndraProducts);
     }
 }

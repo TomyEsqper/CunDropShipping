@@ -9,6 +9,6 @@ public interface IInfrastructureMapper
     List<ProductEntity> ToInfrastructureEntityList(List<DomainProductEntity> domainProductList);
     
     DomainProductEntity ToDomainProductEntity(ProductEntity domainProduct);
-    List<DomainProductEntity> ToDomainProductEntityList(List<ProductEntity> domainProduct);
+    List<DomainProductEntity> ToDomainProductEntityList(List<ProductEntity> productEntities);
     
 }

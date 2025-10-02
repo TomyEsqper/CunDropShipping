@@ -9,10 +9,16 @@ namespace CunDropShipping.application.Service;
 
 public interface IProductService
 {
-    // Contrato para obtener todos los porducto
+    // Contrato para obtener todos los productos
+    // Metodos CRUD
     List<DomainProductEntity> GetAllProducts();
     DomainProductEntity GetProductById(int id);
     DomainProductEntity SaveProduct(DomainProductEntity product);
     DomainProductEntity UpdateProduct(int id, DomainProductEntity product);
     DomainProductEntity DeleteProduct(int id, DomainProductEntity product);
+    
+    // --- Metodos filtrado inteligente ---
+    List<DomainProductEntity> SearchProductsByName(string searchTerm);
+    List<DomainProductEntity> FilterProductsByPriceRange(decimal minPrice, decimal maxPrice);
+    List<DomainProductEntity> GetProductsWithLowStock(int stockThreshold);
 }

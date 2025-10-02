@@ -45,15 +45,15 @@ public class InfrastructureMapperImpl : IInfrastructureMapper
         };
     }
 
-    public List<DomainProductEntity> ToDomainProductEntityList(List<ProductEntity> domainProduct)
+    public List<DomainProductEntity> ToDomainProductEntityList(List<ProductEntity> productEntities)
     {
-        if (domainProduct.Count() == 0)
+        
+        // VErifica si la lista de entrada es nula para evitar errores.
+        if (productEntities.Count() == 0)
         {
             return new List<DomainProductEntity>();
         }
-        else
-        {
-            return domainProduct.Select(ToDomainProductEntity).ToList();
-        }
+        // Convierte cada ProducEntity a DomainProductEntity y devolvemos la nueva lista.
+        return productEntities.Select(p => ToDomainProductEntity(p)).ToList();
     }
 }
