@@ -47,4 +47,19 @@ public class ProductServiceImp : IProductService
     {
         return _repository.DeleteProduct(id, product);
     }
+
+    public List<DomainProductEntity> SearchProductsByName(string searchTerm)
+    {
+        return _repository.SearchProductsByName(searchTerm);
+    }
+
+    public List<DomainProductEntity> FilterProductsByPriceRange(decimal minPrice, decimal maxPrice)
+    {
+        return _repository.FilterProductsByPriceRange(minPrice, maxPrice);
+    }
+
+    public List<DomainProductEntity> GetProductsWithLowStock(int stockThreshold)
+    {
+        return _repository.GetProductsWithLowStock(stockThreshold);
+    }
 }

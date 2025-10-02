@@ -99,4 +99,39 @@ public class ProductController : ControllerBase
         var adapterResult = _adapterMapper.ToAdapterProduct(deletedProduct);
         return Ok(adapterResult);
     }
+    
+    // --- ENDPOINTS FILTRADO AVANZADO ---
+    
+    /// <summary>
+    /// Busca productos por su nombre.
+    /// </summary>
+    /// <param name="searchTerm">Término de búsqueda.</param>
+    /// <returns>Una lista de productos coincidentes.</returns>
+    [HttpGet("search")]
+    public ActionResult<List<AdapterProductEntity>> SearchByName([FromQuery] string searchTerm)
+    {
+        // 1. Llama al servicio, que a su vez llama al repositorio.
+        var domainProducts = _productService.SearchProductsByName(searchTerm);
+        // 2. Traduce la lista de dominio a la lista para el "cliente" (la API).
+        var adapterProducts = _adapterMapper.ToAdapterProductList(domainProducts);
+        // 3. Devuelve la lista con un 200 OK.
+        return Ok(adapterProducts); 
+    }
+
+    [HttpGet("filter/price")]
+    public ActionResult<List<AdapterProductEntity>> FilterProductByPriceRange([FromQuery] decimal minPrice,
+        [FromQuery] decimal maxPrice)
+    {
+        var domainProducts = _productService.FilterProductsByPriceRange(minPrice, maxPrice);
+        var adapterProducts = _adapterMapper.ToAdapterProductList(domainProducts);
+        return Ok(adapterProducts);
+    }
+    
+    [HttpGet("stock/low")]
+    public ActionResult<List<AdapterProductEntity>> GetProductsWithLowStock([FromQuery] int stockThreshold)
+    {
+        var domainProducts = _productService.GetProductsWithLowStock(stockThreshold);
+        var adapterProducts = _adapterMapper.ToAdapterProductList(domainProducts);
+        return Ok(adapterProducts);
+    }
 }
