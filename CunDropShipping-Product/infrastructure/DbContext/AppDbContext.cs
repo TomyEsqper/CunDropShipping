@@ -1,5 +1,6 @@
 using CunDropShipping.infrastructure.Entity;
 using Microsoft.EntityFrameworkCore;
+
 namespace CunDropShipping.infrastructure.DbContext;
 
 // Hereda de DbContext, la clase de Entity Framework Core.

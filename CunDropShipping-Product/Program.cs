@@ -1,8 +1,4 @@
-/// <summary>
-/// Punto de entrada de la aplicación ASP.NET Core. Aquí se configura el host, los servicios
-/// y el pipeline HTTP (Swagger, DbContext, repositorios y mappers).
-/// Este archivo contiene declaraciones de nivel superior y no define clases públicas.
-/// </summary>
+
 
 using CunDropShipping.adapter.restful.v1.controller.Mapper;
 using CunDropShipping.infrastructure.DbContext;
@@ -10,7 +6,6 @@ using CunDropShipping.application.Service;
 using CunDropShipping.domain;
 using CunDropShipping.infrastructure.Mapper;
 using Microsoft.EntityFrameworkCore;
-
 
 var builder = WebApplication.CreateBuilder(args);
 

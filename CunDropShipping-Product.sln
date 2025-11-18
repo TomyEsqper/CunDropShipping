@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CunDropShipping", "CunDropShipping\CunDropShipping.csproj", "{90C24E8F-392A-40AD-AFD0-90D6FDA7B4B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CunDropShipping-Product", "CunDropShipping-Product\CunDropShipping-Product.csproj", "{90C24E8F-392A-40AD-AFD0-90D6FDA7B4B9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{21D9E7F0-9D53-495D-A4D1-8E921ACF3719}"
 	ProjectSection(SolutionItems) = preProject

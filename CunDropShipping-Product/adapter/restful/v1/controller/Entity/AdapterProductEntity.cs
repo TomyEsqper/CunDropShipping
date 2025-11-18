@@ -9,12 +9,12 @@ public class AdapterProductEntity
     /// <summary>
     /// Identificador único del producto expuesto por la API.
     /// </summary>
-    public int Id { get; set; }
+    public int IdProduct { get; set; }
 
     /// <summary>
     /// Nombre del producto que se muestra al cliente de la API.
     /// </summary>
-    public string Name { get; set; }
+    public string NameProduct { get; set; }
 
     /// <summary>
     /// Descripción del producto.
@@ -29,5 +29,5 @@ public class AdapterProductEntity
     /// <summary>
     /// Cantidad de unidades disponibles en stock.
     /// </summary>
-    public int Stock { get; set; }
+    public int StockQuantity { get; set; }
 }

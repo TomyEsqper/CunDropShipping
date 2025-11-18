@@ -27,13 +27,13 @@ public interface IAdapterMapper
     /// </summary>
     /// <param name="adapterProduct">Entidad del adaptador a convertir.</param>
     /// <returns>Instancia de <see cref="DomainProductEntity"/> correspondiente.</returns>
-    public DomainProductEntity ToDomainProduct(AdapterProductEntity adapterProduct);
+    DomainProductEntity ToDomainProduct(AdapterProductEntity adapterProduct);
 
     /// <summary>
     /// Convierte una lista de entidades del adaptador a una lista de entidades de dominio.
     /// </summary>
     /// <param name="adapterProducts">Lista de entidades del adaptador.</param>
     /// <returns>Lista de <see cref="DomainProductEntity"/> resultante.</returns>
-    public List<DomainProductEntity> ToDomeinProducts(List<AdapterProductEntity> adapterProducts);
+    List<DomainProductEntity> ToDomainProducts(List<AdapterProductEntity> adapterProducts);
 
 }

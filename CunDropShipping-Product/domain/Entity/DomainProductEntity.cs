@@ -9,12 +9,12 @@ public class DomainProductEntity
     /// <summary>
     /// Identificador único del producto en el dominio.
     /// </summary>
-    public int Id { get; set; }
+    public int IdProduct { get; set; }
 
     /// <summary>
     /// Nombre del producto.
     /// </summary>
-    public string Name { get; set; }
+    public string NameProduct { get; set; }
 
     /// <summary>
     /// Descripción del producto.
@@ -29,5 +29,5 @@ public class DomainProductEntity
     /// <summary>
     /// Cantidad disponible en stock.
     /// </summary>
-    public int Stock { get; set; }
+    public int StockQuantity { get; set; }
 }

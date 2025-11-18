@@ -18,15 +18,15 @@ public class AdapterMapper : IAdapterMapper
     {
         return new AdapterProductEntity
         {
-            Id = domainProduct.Id,
-            Name = domainProduct.Name,
+            IdProduct = domainProduct.IdProduct,
+            NameProduct = domainProduct.NameProduct,
             Description = domainProduct.Description,
             Price = domainProduct.Price,
-            Stock = domainProduct.Stock,
+            StockQuantity = domainProduct.StockQuantity,
         };    
     }
 
-    /// <summary>
+        /// <summary>
     /// Convierte una lista de entidades de dominio a una lista lista para la API.
     /// </summary>
     /// <param name="domainProducts">Lista de entidades del dominio.</param>
@@ -45,11 +45,11 @@ public class AdapterMapper : IAdapterMapper
     {
         return new DomainProductEntity
         {
-            Id = adapterProduct.Id,
-            Name = adapterProduct.Name,
+            IdProduct = adapterProduct.IdProduct,
+            NameProduct = adapterProduct.NameProduct,
             Description = adapterProduct.Description,
             Price = adapterProduct.Price,
-            Stock = adapterProduct.Stock,
+            StockQuantity = adapterProduct.StockQuantity,
         }; 
     }
 
@@ -58,7 +58,7 @@ public class AdapterMapper : IAdapterMapper
     /// </summary>
     /// <param name="adapterProducts">Lista de entidades del adaptador.</param>
     /// <returns>Lista de <see cref="DomainProductEntity"/> resultante.</returns>
-    public List<DomainProductEntity> ToDomeinProducts(List<AdapterProductEntity> adapterProducts)
+    public List<DomainProductEntity> ToDomainProducts(List<AdapterProductEntity> adapterProducts)
     {
         return  adapterProducts.Count == 0 ? new List<DomainProductEntity>() : adapterProducts.Select(ToDomainProduct).ToList();   
     }

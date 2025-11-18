@@ -19,11 +19,12 @@ public class InfrastructureMapperImpl : IInfrastructureMapper
         return new ProductEntity
         {
             // ... y copiamos los valores campo por campo.
-            Name = domainProduct.Name,
+            nameProduct = domainProduct.NameProduct,
             Description = domainProduct.Description,
-            Price = domainProduct.Price,
-            Stock = domainProduct.Stock
-        };      }
+            price = domainProduct.Price,
+            stockQuantity = domainProduct.StockQuantity
+        };      
+    }
 
     /// <summary>
     /// Convierte una lista de entidades de dominio a una lista de entidades de infraestructura.
@@ -51,11 +52,11 @@ public class InfrastructureMapperImpl : IInfrastructureMapper
         return new DomainProductEntity
         {
             // ... y copiamos los valores campo por campo.
-            Id = domainProduct.Id,
-            Name = domainProduct.Name,
+            IdProduct = domainProduct.IdProduct,
+            NameProduct = domainProduct.nameProduct,
             Description = domainProduct.Description,
-            Price = domainProduct.Price,
-            Stock = domainProduct.Stock
+            Price = domainProduct.price,
+            StockQuantity = domainProduct.stockQuantity
         };
     }
 

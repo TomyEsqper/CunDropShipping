@@ -22,7 +22,7 @@ public interface IProductService
     /// <returns>La entidad <see cref="DomainProductEntity"/> correspondiente al id o null si no existe.</returns>
     DomainProductEntity GetProductById(int id);
 
-    /// <summary>
+   /// <summary>
     /// Crea y persiste un nuevo producto.
     /// </summary>
     /// <param name="product">Entidad de dominio que contiene los datos del producto a guardar.</param>
@@ -40,10 +40,9 @@ public interface IProductService
     /// <summary>
     /// Elimina un producto existente.
     /// </summary>
-    /// <param name="id">Identificador del producto a eliminar.</param>
-    /// <param name="product">Entidad de dominio que puede usarse para validaciones o auditoría.</param>
+    /// <param name="idProduct"></param>
     /// <returns>La entidad <see cref="DomainProductEntity"/> eliminada o null si no se encontró.</returns>
-    DomainProductEntity DeleteProduct(int id, DomainProductEntity product);
+    DomainProductEntity DeleteProduct(int idProduct);
     
     // --- Metodos filtrado inteligente ---
     /// <summary>

@@ -69,12 +69,11 @@ public class ProductServiceImp : IProductService
     /// <summary>
     /// Elimina un producto existente.
     /// </summary>
-    /// <param name="id">Identificador del producto a eliminar.</param>
-    /// <param name="product">Entidad de dominio usada para validaciones opcionales.</param>
+    /// <param name="idProduct"></param>
     /// <returns>La entidad eliminada o null si no existe.</returns>
-    public DomainProductEntity DeleteProduct(int id, DomainProductEntity product)
+    public DomainProductEntity DeleteProduct(int idProduct)
     {
-        return _repository.DeleteProduct(id, product);
+        return _repository.DeleteProduct(idProduct);
     }
 
     /// <summary>
