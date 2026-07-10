@@ -30,8 +30,11 @@ public class SubCategoryController : ControllerBase
     public async Task<ActionResult<AdapterSubCategoryEntity>> GetSubCategoryById(int id)
     {
         var existingSubCtegory = await _subCategoryService.GetSubCategoryByIdAsync(id);
-        if (existingSubCtegory == null) return NotFound();
-        
+        if (existingSubCtegory == null)
+        {
+            return NotFound(new { message = $"SubCategory with ID {id} not found" });
+        }
+
         return Ok(_subCategoryAdapterMapper.ToAdapterSubCategory(existingSubCtegory));
     }
     
@@ -51,20 +54,33 @@ public class SubCategoryController : ControllerBase
     {
         var domainSubCategory = _subCategoryAdapterMapper.ToDomainSubCategory(subCategory);
         var updatedSubCategory = await _subCategoryService.UpdateSubCategoryAsync(id, domainSubCategory);
-        
-        if (updatedSubCategory == null) return NotFound();
-        
+
+        if (updatedSubCategory == null)
+        {
+            return NotFound(new { message = $"SubCategory with ID {id} not found" });
+        }
+
         return Ok(_subCategoryAdapterMapper.ToAdapterSubCategory(updatedSubCategory));
     }
     
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteSubCategory(int id)
     {
-        var deletedSubCategory = await _subCategoryService.DeleteSubCategoryAsync(id);
-        
-        if (deletedSubCategory == null) return NotFound();
-        
-        return NoContent();
+        try
+        {
+            var deletedSubCategory = await _subCategoryService.DeleteSubCategoryAsync(id);
+
+            if (deletedSubCategory == null)
+            {
+                return NotFound(new { message = $"SubCategory with ID {id} not found" });
+            }
+
+            return NoContent();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(new { message = ex.Message });
+        }
     }
     
     

@@ -6,6 +6,7 @@ namespace Catalog.infrastructure.DbContext;
 
 public class SubCategoryRepository
 {
+    private const string DeletedProductStatus = "DELETED";
     private readonly AppDbContext _context;
     private readonly ISubCategoryInfrastructureMapper _mapper;
 
@@ -70,11 +71,19 @@ public class SubCategoryRepository
     {
         var existingSubCategory = await _context.SubCategories.FindAsync(id);
         if (existingSubCategory == null) return null;
-        
+
+        var hasActiveProducts = await _context.Products
+            .AnyAsync(product => product.SubCategoryId == id && product.ProductStatus != DeletedProductStatus);
+
+        if (hasActiveProducts)
+        {
+            throw new InvalidOperationException("Cannot delete subcategory because it has active products.");
+        }
+
         _context.SubCategories.Remove(existingSubCategory);
-        
+
         await _context.SaveChangesAsync();
-        
+
         return _mapper.ToDomainSubCategoryEntity(existingSubCategory);
     }
 }

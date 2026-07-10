@@ -6,6 +6,7 @@ namespace Catalog.infrastructure.DbContext;
 
 public class CategoryRepository
 {
+    private const string DeletedStatus = "DELETED";
     private readonly AppDbContext _context;
     private readonly ICategoryInfrastructureMapper _mapper;
     
@@ -19,6 +20,7 @@ public class CategoryRepository
     {
         var categories = await _context.Categories
             .AsNoTracking()
+            .Where(category => category.CategoryStatus != DeletedStatus)
             .OrderBy(c => c.NameCategory)
             .ToListAsync();
 
@@ -28,7 +30,8 @@ public class CategoryRepository
     public async Task<DomainCategoryEntity?> GetCategoryByIdAsync(int id)
     {
         var infraCategory = await _context.Categories
-            .FirstOrDefaultAsync(category => category.CategoryId == id);
+            .AsNoTracking()
+            .FirstOrDefaultAsync(category => category.CategoryId == id && category.CategoryStatus != DeletedStatus);
         
         if (infraCategory == null) return null;
         
@@ -45,9 +48,10 @@ public class CategoryRepository
         return _mapper.ToDomainCategoryEntity(infraCategory);
     }
 
-    public async Task<DomainCategoryEntity> UpdateCategoryAsync(int id, DomainCategoryEntity domainCategory)
+    public async Task<DomainCategoryEntity?> UpdateCategoryAsync(int id, DomainCategoryEntity domainCategory)
     {
-        var existingCategory = await _context.Categories.FindAsync(id);
+        var existingCategory = await _context.Categories
+            .FirstOrDefaultAsync(category => category.CategoryId == id && category.CategoryStatus != DeletedStatus);
         if (existingCategory == null) return null;
         
         existingCategory.NameCategory = domainCategory.NameCategory;
@@ -60,15 +64,24 @@ public class CategoryRepository
         return domainCategory;
     }
 
-    public async Task<DomainCategoryEntity> DeleteCategoryAsync(int id)
+    public async Task<DomainCategoryEntity?> DeleteCategoryAsync(int id)
     {
-        var existingCategory = await _context.Categories.FindAsync(id);
+        var existingCategory = await _context.Categories
+            .FirstOrDefaultAsync(category => category.CategoryId == id && category.CategoryStatus != DeletedStatus);
         if (existingCategory == null) return null;
-        
-        _context.Categories.Remove(existingCategory);
-        
+
+        var hasSubCategories = await _context.SubCategories
+            .AnyAsync(subCategory => subCategory.CategoryId == id);
+
+        if (hasSubCategories)
+        {
+            throw new InvalidOperationException("Cannot delete category because it has subcategories.");
+        }
+
+        existingCategory.CategoryStatus = DeletedStatus;
+
         await _context.SaveChangesAsync();
-        
+
         return _mapper.ToDomainCategoryEntity(existingCategory);
     }
 }

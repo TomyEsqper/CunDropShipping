@@ -26,6 +26,7 @@ La API actual expone:
 - `catalog-service/infrastructure/`: repositorios EF Core, entidades de persistencia y mapeadores.
 - `catalog-service/adapter/restful/v1/controller/`: controladores, modelos expuestos por la API y mapeadores.
 - `docs/`: documentacion detallada del proyecto.
+- `catalog-service.Tests/`: integration tests de la API.
 
 Documentacion adicional:
 
@@ -63,6 +64,12 @@ Ejecutar con hot reload:
 
 ```bash
 dotnet watch --project catalog-service/catalog-service.csproj run
+```
+
+Ejecutar tests de integracion:
+
+```bash
+dotnet test catalog-service.sln
 ```
 
 Los perfiles locales de ejecucion estan definidos en `catalog-service/Properties/launchSettings.json`.

@@ -22,7 +22,7 @@ public class ProductServiceImp : IProductService
     public async Task<DomainProductEntity> SaveProductAsync(DomainProductEntity product)
     {
         var subCat = await GetSubCategoryAsync(product.SubCategoryId);
-        if (subCat == null) throw new KeyNotFoundException("SubCategory not found");
+        if (subCat == null) throw new KeyNotFoundException($"SubCategory with ID {product.SubCategoryId} not found");
         product.SubCategory = subCat;
 
         return await _productRepository.SaveProductAsync(product);
@@ -31,18 +31,13 @@ public class ProductServiceImp : IProductService
     public async Task<DomainProductEntity?> UpdateProductAsync(int id, DomainProductEntity product)
     {
         var subCat = await GetSubCategoryAsync(product.SubCategoryId);
-        if (subCat == null) throw new KeyNotFoundException("SubCategory not found");
+        if (subCat == null) throw new KeyNotFoundException($"SubCategory with ID {product.SubCategoryId} not found");
 
         product.SubCategory = subCat;
         return await _productRepository.UpdateProductAsync(id, product);
     }
 
-    public async Task<DomainProductEntity?> DeleteProductAsync(int id)
-    {
-        var p = await _productRepository.GetProductByIdAsync(id);
-        if (p != null) await _productRepository.DeleteProductAsync(id);
-        return p;
-    }
+    public async Task<DomainProductEntity?> DeleteProductAsync(int id) => await _productRepository.DeleteProductAsync(id);
 
     public async Task<List<DomainProductEntity>> SearchProductsByNameAsync(string term) => await _productRepository.SearchProductsByNameAsync(term);
     public async Task<List<DomainProductEntity>> FilterProductsByPriceRangeAsync(decimal min, decimal max) => await _productRepository.FilterProductsByPriceRangeAsync(min, max);

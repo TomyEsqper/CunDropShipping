@@ -5,6 +5,7 @@ using Catalog.application.Service;
 using Catalog.domain;
 using Catalog.infrastructure.Mapper;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,8 +24,18 @@ builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 // 2. Registra el AppDbContext en el contenedor de dependencias.
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+if (builder.Environment.IsEnvironment("Testing"))
+{
+    var testDatabasePath = Path.Combine(Path.GetTempPath(), "catalog-service-integration-tests.db");
+
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseSqlite($"Data Source={testDatabasePath}"));
+}
+else
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+}
 
 builder.Services.AddScoped<ProductRepository>();
 builder.Services.AddScoped<IProductInfrastructureMapper, ProductInfrastructureMapperImpl>();
@@ -42,6 +53,14 @@ builder.Services.AddScoped<ICategoryAdapterMapper, CategoryAdapterMapper>();
 builder.Services.AddScoped<ICategoryService, CategoryServiceImp>();
 
 var app = builder.Build();
+
+if (app.Environment.IsEnvironment("Testing"))
+{
+    using var scope = app.Services.CreateScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    dbContext.Database.EnsureDeleted();
+    dbContext.Database.EnsureCreated();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
