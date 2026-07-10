@@ -7,17 +7,17 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["CunDropShipping/CunDropShipping.csproj", "CunDropShipping/"]
-RUN dotnet restore "CunDropShipping/CunDropShipping.csproj"
+COPY ["catalog-service.csproj", "./"]
+RUN dotnet restore "./catalog-service.csproj"
 COPY . .
-WORKDIR "/src/CunDropShipping"
-RUN dotnet build "./CunDropShipping.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src"
+RUN dotnet build "./catalog-service.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./CunDropShipping.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./catalog-service.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "CunDropShipping.dll"]
+ENTRYPOINT ["dotnet", "catalog-service.dll"]
